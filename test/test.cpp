@@ -1,11 +1,27 @@
+// idocohen963@gmail.com
+
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "../include/SquareMat.hpp"
 #include "doctest.h"
-#include <sstream>
+#include <iostream>
 #include <cmath>
 
 using namespace matrix_ops;
 using namespace doctest;
+
+TEST_CASE("operator[]") {
+    SUBCASE("const matrix") {
+        const SquareMat m(2);
+        CHECK(m[0][0] == 0.0);
+        CHECK_THROWS_AS(m[2][0], std::out_of_range);
+    }
+
+    SUBCASE("non-const matrix") {
+        SquareMat m(2);
+        CHECK(m[0][0] == 0.0);
+        CHECK_THROWS_AS(m[2][2], std::out_of_range);
+    }
+}
 
 TEST_CASE("Constructor and basic operations") {
     SUBCASE("Default constructor initializes to zeros") {
@@ -233,8 +249,9 @@ TEST_CASE("Arithmetic operators") {
         CHECK(result[1][1] == Approx(1.5));
     }
     
-    SUBCASE("Modulo by zero throws exception") {
+    SUBCASE("Modulo by zero/negative throws exception") {
         CHECK_THROWS_AS(m1 % 0, std::invalid_argument);
+        CHECK_THROWS_AS(m1 %= -2, std::invalid_argument);
     }
     
     SUBCASE("Division by scalar") {
@@ -393,6 +410,27 @@ TEST_CASE("Matrix operations") {
         m3[2][1] = 8.0;
         m3[2][2] = 9.0;
         CHECK(!m3 == Approx(0.0));
+    }
+    SUBCASE("Determinant for special matrices") {
+        // Identity matrix
+        SquareMat id = SquareMat::identity(3);
+        CHECK(!id == 1.0);
+
+        // Matrix with identical rows (determinant should be 0)
+        SquareMat m(2);
+        m[0][0] = 1.0;
+        m[0][1] = 2.0;
+        m[1][0] = 1.0;
+        m[1][1] = 2.0;
+        CHECK(!m == Approx(0.0));
+
+        // Matrix with a row of zeros (determinant should be 0)
+        SquareMat m2(2);
+        m2[0][0] = 0.0;
+        m2[0][1] = 0.0;
+        m2[1][0] = 3.0;
+        m2[1][1] = 4.0;
+        CHECK(!m2 == Approx(0.0));
     }
 }
 

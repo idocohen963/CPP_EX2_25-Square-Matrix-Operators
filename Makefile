@@ -1,16 +1,78 @@
+# idocohen963@gmail.com
+
+# Compiler and flags
 CXX = g++
-CXXFLAGS = -std=gnu++17 -Wall -Wextra -Iinclude
+CXXFLAGS = -std=gnu++17 -Wall -Wextra -pedantic -g
 
-SRC = src/main.cpp src/SquareMat.cpp
-TARGET = squaremat_demo
+# Directories
+SRC_DIR = src
+INCLUDE_DIR = include
+TEST_DIR = test
+BUILD_DIR = build
 
-all: $(TARGET)
+# Source files
+SOURCES = $(SRC_DIR)/SquareMat.cpp
+MAIN_SRC = $(SRC_DIR)/main.cpp
+TEST_SRC = $(TEST_DIR)/test.cpp
 
-$(TARGET): $(SRC)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRC)
+# Object files
+OBJECTS = $(SOURCES:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
+MAIN_OBJ = $(BUILD_DIR)/main.o
+TEST_OBJ = $(BUILD_DIR)/test.o
 
-run: $(TARGET)
-	./$(TARGET)
+# Executables
+MAIN_EXE = squaremat_demo
+TEST_EXE = squaremat_test
 
+# Targets
+.PHONY: all Main test valgrind valgrind-test clean
+
+all: Main test
+
+# Create build directory if it doesn't exist
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+# Compile source files
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
+
+# Compile main file
+$(MAIN_OBJ): $(MAIN_SRC) | $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
+
+# Compile test file
+$(TEST_OBJ): $(TEST_SRC) | $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
+
+# Link main executable
+Main: $(OBJECTS) $(MAIN_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $(MAIN_EXE)
+	./$(MAIN_EXE)
+
+# Link test executable and run tests
+test: $(OBJECTS) $(TEST_OBJ)
+	$(CXX) $(CXXFLAGS) $^ -o $(TEST_EXE)
+	./$(TEST_EXE)
+
+# Run valgrind on main executable
+valgrind: Main
+	valgrind --leak-check=full --show-leak-kinds=all ./$(MAIN_EXE)
+	valgrind --leak-check=full --show-leak-kinds=all ./$(TEST_EXE)
+
+# Clean up
 clean:
-	rm -f $(TARGET)
+	rm -rf $(BUILD_DIR) $(MAIN_EXE) $(TEST_EXE)
+
+# מילון דגלים, קיצורים ומשתנים אוטומטיים:
+# -p                  : ב-mkdir - יוצר גם תיקיות אב חסרות (parents)
+# -rf                 : ב-rm - מסיר קבצים/תיקיות רקורסיבית וללא בקשת אישור (recursive, force)
+# -std=c++11          : לקמפלר - השתמש בתקן C++11
+# -Wall               : לקמפלר - הצג את כל האזהרות
+# -Wextra             : לקמפלר - הצג אזהרות נוספות
+# -pedantic           : לקמפלר - הקפדה על תקן C++
+# -g                  : לקמפלר - הוסף מידע דיבאג
+# --leak-check=full   : ל-valgrind - בדיקה מלאה של דליפות זיכרון
+# --show-leak-kinds=all : ל-valgrind - הצג את כל סוגי הדליפות
+# $@                  :משתנה אוטומטי במייקפייל שמייצג את שם המטרה (target) הנוכחית.
+# $^                  : משתנה אוטומטי במייקפייל שמייצג את כל התלויות (dependencies) של המטרה הנוכחית, מופרדות ברווחים.

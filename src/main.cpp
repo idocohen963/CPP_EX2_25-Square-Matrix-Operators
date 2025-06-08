@@ -1,3 +1,4 @@
+// idocohen963@gmail.com
 #include <iostream>
 #include "../include/SquareMat.hpp"
 
@@ -5,7 +6,7 @@ using namespace matrix_ops;
 using namespace std;
 
 int main() {
-    cout << "SquareMat Library Demo" << endl;
+    cout << "SquareMat Demo" << endl;
     cout << "======================" << endl << endl;
     
     // Create a 3x3 matrix
@@ -66,7 +67,6 @@ int main() {
     // Determinant
     cout << "Determinant of m3 (!m3): " << !m3 << endl << endl;
     
-
     // Power
     cout << "m3 raised to power 2 (m3^2):" << endl;
     cout << (m3 ^ 2) << endl;
@@ -76,11 +76,62 @@ int main() {
     cout << SquareMat::identity(3) << endl;
     
     // Comparison operators
-    cout << "Comparison of m1 and m2:" << endl;
+    cout << "Comparison of m1 and m2:" << endl << endl;
     cout << "m1 == m2: " << (m1 == m2 ? "true" : "false") << endl;
     cout << "m1 != m2: " << (m1 != m2 ? "true" : "false") << endl;
     cout << "m1 < m2: " << (m1 < m2 ? "true" : "false") << endl;
     cout << "m1 > m2: " << (m1 > m2 ? "true" : "false") << endl;
+   
+    cout << "m1:" << endl << endl;
+    cout << m1 << endl;
+    // ++m1 (pre-increment)
+    cout << "Pre-increment (++m1):" << endl;
+    ++m1;
+    cout << m1 << endl;
+
+    // m1++ (post-increment)
+    cout << "Post-increment (m1++):" << endl;
+    cout << m1++ << endl;
+    cout << "After post-increment, m1:" << endl;
+    cout << m1 << endl;
+
+    // --m1 (pre-decrement)
+    cout << "Pre-decrement (--m1):" << endl;
+    --m1;
+    cout << m1 << endl;
+
+    // m1-- (post-decrement)
+    cout << "Post-decrement (m1--):" << endl;
+    cout << m1-- << endl;
+    cout << "After post-decrement, m1:" << endl;
+    cout << m1 << endl;
+
+    // Compound assignment operators
+    cout << "Compound assignment (m1 += m2):" << endl;
+    m1 += m2;
+    cout << m1 << endl;
+
+    cout << "Compound assignment (m1 *= 2):" << endl;
+    m1 *= 2;
+    cout << m1 << endl;
+
+    cout << "Compound assignment (m1 %= 3):" << endl;
+    m1 %= 3;
+    cout << m1 << endl;
+
+    cout << "Compound assignment (m1 /= 2):" << endl;
+    m1 /= 2;
+    cout << m1 << endl;
+
+    // Modulo operation
+    cout << "Modulo operation (m1 % 3):" << endl;
+    cout << (m1 % 3) << endl;
+
+    // Access and modify a single element
+    cout << "Accessing m1[0][1]: " << m1[0][1] << endl << endl;
+    m1[0][1] = 42;
+    cout << "After setting m1[0][1] = 42:" << endl;
+    cout << m1 << endl;
     
     cout << "\nDemo completed successfully!" << endl;
     return 0;

@@ -1,10 +1,4 @@
-/**
- * @file SquareMat.cpp
- * @brief Implementation of the SquareMat class
- * 
- * This file contains the implementation of the SquareMat class methods
- * declared in SquareMat.hpp.
- */
+// idocohen963@gmail.com
 
 #include "../include/SquareMat.hpp"
 

@@ -1,3 +1,4 @@
+// idocohen963@gmail.com
 /**
  * @file SquareMat.hpp
  * @brief Header file for the SquareMat class, implementing square matrix operations
