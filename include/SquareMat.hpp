@@ -143,13 +143,6 @@ public:
     static SquareMat identity(int size);
 
     /**
-     * @brief Get the size of the matrix
-     * 
-     * @return int Size of the matrix
-     */
-    int getSize() const { return size; }
-
-    /**
      * @brief Access row at specified index with bounds checking
      * 
      * @param row Row index
